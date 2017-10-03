@@ -1,49 +1,21 @@
 ---
-- name: Add Kubernetes CentOS7 yum repo
-  yum_repository:
-    name: kubernetes
-    description: Kubernetes Yum Repo
-    baseurl: http://yum.kubernetes.io/repos/kubernetes-el7-x86_64
-    enabled: yes
-    gpgkey: 
-      - https://packages.cloud.google.com/yum/doc/yum-key.gpg
-      - https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
-    gpgcheck: yes    
-    state: present
 
-- name: Prepare for Docker install from Yum repo
-  yum: name="{{item}}" state=installed
-  with_items:
-    - yum-utils
-    - device-mapper-persistent-data
-    - lvm2
+- include: centos-docker.yml
+  when: ansible_os_family == 'RedHat' 
 
-- name: Add Docker Yum rCentOS7 repo
-  yum_repository:
-    name: docker
-    description: Docker Yum repo
-    baseurl: https://download.docker.com/linux/centos/docker-ce.repo
-    enabled: yes
-    gpgcheck: no
-    state: present
-
-- name: Install Docker and Kubernetes
-  yum: name="{{item}}" state=installed
-  with_items:
-    - docker
-    - kubelet
-    - kubeadm
-    - kubectl
-    - kubernetes-cni
+- include: centos-kubernetes.yml
+  when: ansible_os_family == 'RedHat'
 
 - name: Disable firewalld
   systemd: name="firewalld" enabled=no state=stopped
   with_items:
     - firewalld
+  when: ansible_os_family == 'RedHat'
 
 - name: Enable systemd components for Kubernetes
   systemd: name="{{item}}" enabled=yes state=started
   with_items:
     - docker
     - kubelet
+  when: ansible_os_family == 'RedHat'
 
