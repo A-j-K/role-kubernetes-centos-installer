@@ -23,7 +23,16 @@
 
 - name: Disable firewalld
   systemd: 
-    name: firewalld 
+    name: firewalld  
+    enabled: no 
+    state: stopped
+  with_items:
+    - firewalld
+  when: ansible_os_family == 'RedHat'
+
+- name: Disable firewalld
+  systemd: 
+    name: "{{item}}"
     enabled: no 
     state: stopped
   with_items:
