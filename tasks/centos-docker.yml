@@ -4,9 +4,7 @@
     name: '{{ item }}'
     state: absent
   with_items:
-    - docker
-    - docker-common
-    - docker-engine
+    - docker-ce
 
 - name: Add Docker GPG key
   rpm_key:
