@@ -12,6 +12,7 @@
     sysctl_set: yes
     state: present
     reload: yes
+    ignoreerrors: yes
   when: ansible_os_family == 'RedHat'
 
 - include: centos-docker.yml
@@ -20,11 +21,14 @@
 - include: centos-kubernetes.yml
   when: ansible_os_family == 'RedHat'
 
-#- name: Disable firewalld
-#  systemd: name="firewalld" enabled=no state=stopped
-#  with_items:
-#    - firewalld
-#  when: ansible_os_family == 'RedHat'
+- name: Disable firewalld
+  systemd: 
+    name: firewalld 
+    enabled: no 
+    state: stopped
+  with_items:
+    - firewalld
+  when: ansible_os_family == 'RedHat'
 
 - name: Enable systemd components for Kubernetes
   systemd: 
