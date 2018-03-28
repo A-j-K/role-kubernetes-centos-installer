@@ -48,9 +48,9 @@
   docker_image:
     name: "{{item}}"
   with_items:
-    - "gcr.io/google_containers/kube-apiserver-amd64:v1.8.2"
-    - "gcr.io/google_containers/kube-controller-manager-amd64:v1.8.2"
-    - "gcr.io/google_containers/kube-scheduler-amd64:v1.8.2"
+    - "gcr.io/google_containers/kube-apiserver-amd64:v1.8.7"
+    - "gcr.io/google_containers/kube-controller-manager-amd64:v1.8.7"
+    - "gcr.io/google_containers/kube-scheduler-amd64:v1.8.7"
 
 - name: Ensure kubelet is started and enabled at boot.
   service:
